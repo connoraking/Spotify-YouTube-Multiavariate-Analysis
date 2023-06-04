@@ -7,6 +7,9 @@ Multivariate Analysis of Spotify Metrics
     - [Description](#description)
     - [Variables](#variables)
 2. [Project Goal](#project-goal)
+3. [Results](#results)
+    - [Multiple Multivariate Regression](#Multiple-Multivariate-Regression-Analysis)
+    - [MANOVA](#One-Way-MANOVA)
 
 ## Dataset
 
