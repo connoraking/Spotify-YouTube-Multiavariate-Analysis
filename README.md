@@ -1,5 +1,5 @@
 # Spotify-YouTube-Multiavariate-Analysis
-Multivariate Analysis of Spotify Metrics
+In this project, I use various multivariate analysis techniques to assess the popularity of music tracks by analyzing several audio metrics derived from Spotfiy in combination with some popularity metrics from YouTube. The project was entirely coded in R and uses packages such as `tidyverse`, `corrplot`, and `ggpubr`. These packages were mainly used for data wrangling and visualization. Majority of the mulvariate analysis was coded from scratch using the theoretical formulas. 
 
 ## Table of Contents
 
@@ -17,7 +17,7 @@ Multivariate Analysis of Spotify Metrics
 
 The dataset was retrieved from [Kaggle](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
 
-The dataset is a combination of data from Spotify and Youtube and consists of several attributes. 
+The dataset is a combination of data from Spotify and Youtube and consists of several attributes. The data itself is from the top 10 songs of various popular artists and consists of over 20,000 observations amongst 28 variables.  
 
 The Spotify data includes various characteristics of songs, like `Danceability`, `Energy`, `Key`, `Loudness`, `Speechiness`,
 `Acousticness`, `Instrumentalness`, `Liveness`, `Valence`, `Tempo`, and `Duration_ms`. 
@@ -52,21 +52,34 @@ The dependent variable of `Stream` was from Spotify which represents the number 
 
 ## Project Goal
 
-In this project we will seek to answer various questions via multivariate analysis. We will attempt to answer:
+In this project I will seek to answer various questions via multivariate analysis. I will attempt to answer:
 
-1.  Can we predict the popularity of a song with the help of Spotify audio features?
+1.  Can I predict the popularity of a song with the help of Spotify audio features?
 
-We will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
+I will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
 
 2. Are there differences in the means of the popularity variables between Album_types? (album, compilation, single)
 
-We will utilize *one-way MANOVA* and code from scratch. 
+I will utilize *one-way MANOVA*
+
+## Project Detail
+
+Within the project I will perform EDA, Multiple Multivariate Regression, and a One-Way MANOVA. 
+
+### Exploratory Data Analysis
+    
+- I perfromed data wrangling and visualized the data with packages from `tidyverse` and `corrplot`. 
+- I analyed the `NA` values and decided to remove them because they were a fraction of the data and were seemingly random. This allowed for easier analysis.
+- I plotted the distributions of the popularity/dependent variables and considered cleaning them via omitting outliers or a log-transformation.
+
 
 ## Results
 
 ### Multiple Multivariate Regression Analysis 
 
-- **Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
+- **Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values 
+
+re low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
 
 - **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
 
