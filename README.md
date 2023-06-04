@@ -2,6 +2,7 @@
 Multivariate Analysis of Spotify Metrics
 
 ## Table of Contents
+
 1. [Dataset](#dataset)
   - [Description](#description)
 
