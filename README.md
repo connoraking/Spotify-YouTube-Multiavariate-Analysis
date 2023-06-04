@@ -75,6 +75,7 @@ Within the project I will perform EDA, Multiple Multivariate Regression, and a O
 Here are the plots of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 
 ## Results
