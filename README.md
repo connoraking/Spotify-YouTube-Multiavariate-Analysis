@@ -4,12 +4,13 @@ Multivariate Analysis of Spotify Metrics
 ## Table of Contents
 
 1. [Dataset](#dataset)
-  - [Description](#description)
+    - [Description](#description)
 
 1. [Introduction](#introduction)
 2. [Installation](#installation)
     - [Step 1](#step-1)
     - [Step 2](#step-2)
+
 3. [Usage](#usage)
 4. [Contributing](#contributing)
 5. [License](#license)
