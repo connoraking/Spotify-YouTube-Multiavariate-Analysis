@@ -1,6 +1,8 @@
 # Spotify-YouTube-Multiavariate-Analysis
 In this project, I use various multivariate analysis techniques to assess the popularity of music tracks by analyzing several audio metrics derived from Spotfiy in combination with some popularity metrics from YouTube. The project was entirely coded in R and uses packages such as `tidyverse`, `corrplot`, and `ggpubr`. These packages were mainly used for data wrangling and visualization. Majority of the mulvariate analysis was coded from scratch using the theoretical formulas. 
 
+Please feel free to see 
+
 ## Table of Contents
 
 1. [Dataset](#dataset)
@@ -138,7 +140,7 @@ Here is the residual plot using a log-transformation
 
 ### Multiple Multivariate Regression Analysis 
 
-- **Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance and can decently predict a song's popularity.
+- **Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining variance and can decently predict a song's popularity.
 
 - **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
 
