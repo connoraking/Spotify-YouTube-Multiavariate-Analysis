@@ -62,11 +62,7 @@ I will achieve this via *multiple multivariate regression analysis* and include 
 
 I will utilize *one-way MANOVA*
 
-## Project Detail
-
-Within the project I will perform EDA, Multiple Multivariate Regression, and a One-Way MANOVA. 
-
-### Exploratory Data Analysis
+## Exploratory Data Analysis
     
 - I perfromed data wrangling and visualized the data with packages from `tidyverse` and `corrplot`. 
 - I analyed the `NA` values and decided to remove them because they were a fraction of the data and were seemingly random. This allowed for easier analysis.
