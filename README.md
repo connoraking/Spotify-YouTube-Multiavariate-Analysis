@@ -72,6 +72,10 @@ Within the project I will perform EDA, Multiple Multivariate Regression, and a O
 - I analyed the `NA` values and decided to remove them because they were a fraction of the data and were seemingly random. This allowed for easier analysis.
 - I plotted the distributions of the popularity/dependent variables and considered cleaning them via omitting outliers or a log-transformation.
 
+Here are the plots of the popularity variables:
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
 
 ## Results
 
