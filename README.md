@@ -6,7 +6,7 @@ Multivariate Analysis of Spotify Metrics
 1. [Dataset](#dataset)
     - [Description](#description)
     - [Variables](#variables)
-2. [Project Goal](#project goal)
+2. [Project Goal](#project-goal)
 
 ## Dataset
 
