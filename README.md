@@ -75,7 +75,13 @@ Within the project I will perform EDA, Multiple Multivariate Regression, and a O
 Here are the plots of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
-![](Multivar-Report_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+Here are the plots for omitting outliers:
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+Here are the plots for a log-transformation:
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 
 ## Results
