@@ -15,7 +15,7 @@ Multivariate Analysis of Spotify Metrics
 
 ### Description
 
-The dataset was retrieved from Kaggle [](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
+The dataset was retrieved from Kaggle [Kaggle](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
 
 The dataset is a combination of data from Spotify and Youtube and consists of several attributes. 
 
