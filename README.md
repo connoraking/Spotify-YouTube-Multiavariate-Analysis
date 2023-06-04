@@ -32,13 +32,13 @@ We will utilize *one-way MANOVA* and code from scratch.
 
 ### Multiple Multivariate Regression Analysis 
 
-**Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
+- **Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
 
-**Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
+- **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
 
-**Omission**: Conducting a likelihood ratio test showed that `Key` and `Tempo`, despite having smaller coefficients, could not be omitted from the model as they showed a statistically significant linear relationship with the outcome variables.
+- **Omission**: Conducting a likelihood ratio test showed that `Key` and `Tempo`, despite having smaller coefficients, could not be omitted from the model as they showed a statistically significant linear relationship with the outcome variables.
 
-**Improvements**: Future research could look into the interaction effects between variables or other non-linear relationships. Additional variables not considered in this study may also contribute to song popularity.
+- **Improvements**: Future research could look into the interaction effects between variables or other non-linear relationships. Additional variables not considered in this study may also contribute to song popularity.
 
 ### One-Way Manova
 
