@@ -5,15 +5,8 @@ Multivariate Analysis of Spotify Metrics
 
 1. [Dataset](#dataset)
     - [Description](#description)
+    - [Variables](#variables)
 
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-    - [Step 1](#step-1)
-    - [Step 2](#step-2)
-
-3. [Usage](#usage)
-4. [Contributing](#contributing)
-5. [License](#license)
 ## Dataset
 
 ### Description
