@@ -7,7 +7,10 @@ In this project, I use various multivariate analysis techniques to assess the po
     - [Description](#description)
     - [Variables](#variables)
 2. [Project Goal](#project-goal)
-3. [Results](#results)
+3. [Exploratory Data Analysis](#Exploratory-Data-Analysis)
+4. [Multiple Multivariate Regression Analysis](#Multiple-Multivariate-Regression-Analysis)
+5. [MANOVA](#MANOVA)
+6. [Results](#results)
     - [Multiple Multivariate Regression](#Multiple-Multivariate-Regression-Analysis)
     - [MANOVA](#One-Way-MANOVA)
 
@@ -117,14 +120,25 @@ Here is the residual plot using a log-transformation
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
+## MANOVA
+
+- I created grouped bar plots to compare the means of album types. I data wrangled using `group_by` and `summarise` to create an adequate dataframe to create scaled barplots for easier comparison.
+- I calculated the within-group sum of squares and cross product matrix `W`, between-group sum of squares and cross product matrix `B`, and Wilk's Lambda using theoretical formulas and distributions for 3 groups and multiple variables.
+- I checked equality of covariance matrices via the Box's M test.
+
+### Grouped Bar Plots
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+
+### Scaled Grouped Bar Plots
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ## Results
 
 ### Multiple Multivariate Regression Analysis 
 
-- **Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values 
-
-re low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
+- **Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance and can decently predict a song's popularity.
 
 - **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
 
