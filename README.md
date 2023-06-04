@@ -68,7 +68,7 @@ I will utilize *one-way MANOVA*
 ## Exploratory Data Analysis
     
 - I perfromed data wrangling and visualized the data with packages from `tidyverse` and `corrplot`. 
-- I analyed the `NA` values and decided to remove them because they were a fraction of the data and were seemingly random. This allowed for easier analysis.
+- I analyed the `NA` values and decided to remove them because they were a fraction of each variable and were seemingly random. This allowed for easier analysis.
 - I plotted the distributions of the popularity/dependent variables and considered cleaning them via omitting outliers or a log-transformation.
 - I plotted the independent variables to assess their distributions and created a correlation plot for trends at a glance.
 
