@@ -667,7 +667,7 @@ ggplot(long_means, aes(x = Variable, y = ScaledMean, fill = Album_type)) +
 
 ### Testing
 
-$H_0: \boldsymbol{\tau}_{album} + \boldsymbol{\tau}_{compilation} + \boldsymbol{\tau}_{single} = 0$
+$$H_0: \boldsymbol{\tau}_{album} + \boldsymbol{\tau}_{compilation} + \boldsymbol{\tau}_{single} = 0$$
 
 ```{r}
 rm(list = ls())
@@ -756,7 +756,7 @@ We reject $H_0$ suggesting that the means between the groups of `Album_type` are
 
 An important assumption of MANOVA is the equality of covariance matrices across our groups. Essentially, this means we assume the variability within our groups and the relationships among our dependent variables are the same for all `Album_types`. We used Box's M test to check this assumption.
 
-$H_0: \boldsymbol{\Sigma}_{album} + \boldsymbol{\Sigma}_{compilation} + \boldsymbol{\Sigma}_{single} = \boldsymbol{\Sigma}$
+$$H_0: \boldsymbol{\Sigma}_{album} + \boldsymbol{\Sigma}_{compilation} + \boldsymbol{\Sigma}_{single} = \boldsymbol{\Sigma}$$
 
 ```{r}
 S_pooled <- W / (n - g)

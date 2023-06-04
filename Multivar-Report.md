@@ -362,8 +362,8 @@ We will conduct a bootstrap study with 10,000 samples to create a 95%
 confidence interval for the R-squared values.
 
     ##            [,1]      [,2]      [,3]       [,4]
-    ## 2.5%  0.1269036 0.1262231 0.1271478 0.05823884
-    ## 97.5% 0.1480275 0.1475756 0.1486728 0.07534422
+    ## 2.5%  0.1269311 0.1260480 0.1272366 0.05815921
+    ## 97.5% 0.1479422 0.1475906 0.1487865 0.07512960
 
 #### Bootstrap Plots
 
@@ -527,7 +527,7 @@ We will compare group means with `Album_type` as factors.
 
 ### Testing
 
-$H_0: \boldsymbol{\tau}_{album} + \boldsymbol{\tau}_{compilation} + \boldsymbol{\tau}_{single} = 0$
+$$H_0: \boldsymbol{\tau}_{album} + \boldsymbol{\tau}_{compilation} + \boldsymbol{\tau}_{single} = 0$$
 
     ## New names:
     ## Rows: 20718 Columns: 28
@@ -627,7 +627,7 @@ within our groups and the relationships among our dependent variables
 are the same for all `Album_types`. We used Box’s M test to check this
 assumption.
 
-$H_0: \boldsymbol{\Sigma}_{album} + \boldsymbol{\Sigma}_{compilation} + \boldsymbol{\Sigma}_{single} = \boldsymbol{\Sigma}$
+$$H_0: \boldsymbol{\Sigma}_{album} + \boldsymbol{\Sigma}_{compilation} + \boldsymbol{\Sigma}_{single} = \boldsymbol{\Sigma}$$
 
     ## [1] 6788.335
 
