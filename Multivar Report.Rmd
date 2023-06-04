@@ -2,12 +2,15 @@
 title: "Multivariate Analysis Report"
 author: "Connor King"
 date: "2023-05-17"
-output: github_document
+output: 
+  github_document:
+    toc: TRUE
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
+
 
 ## Dataset
 
@@ -38,15 +41,15 @@ df1 <- df[, dependent_columns]
 
 ## Project Goal
 
-In this project we will seek to answer various questions via multivariate analysis. We will attempt to answer:
+In this project I will seek to answer various questions via multivariate analysis. I will attempt to answer:
 
 1.  Can we predict the popularity of a song with the help of Spotify audio features?
 
-We will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
+I will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
 
 2. Are there differences in the means of the popularity variables between Album_types? (album, compilation, single)
 
-We will utilize *one-way MANOVA*. 
+I will utilize *one-way MANOVA*. 
 
 ### Variable Descriptions
 
@@ -91,7 +94,7 @@ Here are the percent `NA`'s for every variable
 ```{r}
 sapply(df1, function(x) mean(is.na(x)) * 100)
 ```
-The `NA` values are predominantly found within the popularity variables. Since the percentages are small (all less than 3%) and are seemingly random we will remove them for easier analysis.
+The `NA` values are predominantly found within the popularity variables. Since the percentages are small (all less than 3%) and are seemingly random I will remove them for easier analysis.
 
 ```{r}
 df1 <- na.omit(df1)
@@ -121,7 +124,7 @@ boxplot(df1$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col 
 boxplot(df1$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
 ```
 
-The boxplots again show that the outliers seem to be heavily influencing the distributions thus we will consider omitting them.
+The boxplots again show that the outliers seem to be heavily influencing the distributions thus I will consider omitting them.
 
 #### Omitting Outliers
 
@@ -162,7 +165,7 @@ The distributions are easier to visualize now; however, they are still all right
 
 #### Log-Transformation
 
-Now we will consider a log-transformation of the popularity variables:
+Now I will consider a log-transformation of the popularity variables:
 
 ```{r}
 
@@ -187,7 +190,9 @@ boxplot(df1_log$Likes, main = "Distribution of Likes", xlab = "Number of Likes",
 boxplot(df1_log$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
 ```
 
-The distributions now look much more normal so we will consider using a log-transformation within some of our analyses. 
+The distributions now look much more normal so I will consider using a log-transformation within some of our analyses. 
+
+Note: normality of predictors is not a requirement for MANOVA and regression.
 
 ### Independent Variables
 

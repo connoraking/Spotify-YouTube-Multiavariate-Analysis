@@ -3,6 +3,44 @@ Multivariate Analysis Report
 Connor King
 2023-05-17
 
+- <a href="#dataset" id="toc-dataset">Dataset</a>
+- <a href="#project-goal" id="toc-project-goal">Project Goal</a>
+  - <a href="#variable-descriptions" id="toc-variable-descriptions">Variable
+    Descriptions</a>
+- <a href="#exploratory-data-analysis"
+  id="toc-exploratory-data-analysis">Exploratory Data Analysis</a>
+  - <a href="#na-values" id="toc-na-values"><code>NA</code> values</a>
+  - <a href="#popularitydependent-variables"
+    id="toc-popularitydependent-variables">Popularity/Dependent
+    Variables</a>
+  - <a href="#independent-variables"
+    id="toc-independent-variables">Independent Variables</a>
+  - <a href="#correlation-plot" id="toc-correlation-plot">Correlation
+    Plot</a>
+- <a href="#multiple-multivariate-regression"
+  id="toc-multiple-multivariate-regression">Multiple Multivariate
+  Regression</a>
+  - <a href="#diagnostic-checks" id="toc-diagnostic-checks">Diagnostic
+    Checks</a>
+  - <a href="#log-transformation-1"
+    id="toc-log-transformation-1">Log-transformation</a>
+  - <a href="#r-sq-and-bootstrap-study"
+    id="toc-r-sq-and-bootstrap-study">R-sq and Bootstrap Study</a>
+  - <a href="#bootstrap" id="toc-bootstrap">Bootstrap</a>
+  - <a href="#regression-analysis" id="toc-regression-analysis">Regression
+    Analysis</a>
+  - <a href="#variable-omission" id="toc-variable-omission">Variable
+    Omission</a>
+  - <a href="#regression-conclusion"
+    id="toc-regression-conclusion">Regression Conclusion</a>
+- <a href="#one-way-manova" id="toc-one-way-manova">One-Way MANOVA</a>
+  - <a href="#visualizations" id="toc-visualizations">Visualizations</a>
+  - <a href="#testing" id="toc-testing">Testing</a>
+  - <a href="#assumptions-check" id="toc-assumptions-check">Assumptions
+    Check</a>
+  - <a href="#manova-conclusion" id="toc-manova-conclusion">MANOVA
+    Conclusion</a>
+
 ## Dataset
 
 **Description**
@@ -47,20 +85,20 @@ to on Spotify.
 
 ## Project Goal
 
-In this project we will seek to answer various questions via
-multivariate analysis. We will attempt to answer:
+In this project I will seek to answer various questions via multivariate
+analysis. I will attempt to answer:
 
 1.  Can we predict the popularity of a song with the help of Spotify
     audio features?
 
-We will achieve this via *multiple multivariate regression analysis* and
+I will achieve this via *multiple multivariate regression analysis* and
 include a *bootstrap study* to calculate confidence intervals for the
 R-squared values.
 
 2.  Are there differences in the means of the popularity variables
     between Album_types? (album, compilation, single)
 
-We will utilize *one-way MANOVA*.
+I will utilize *one-way MANOVA*.
 
 ### Variable Descriptions
 
@@ -173,7 +211,7 @@ Here are the percent `NA`’s for every variable
 
 The `NA` values are predominantly found within the popularity variables.
 Since the percentages are small (all less than 3%) and are seemingly
-random we will remove them for easier analysis.
+random I will remove them for easier analysis.
 
 ### Popularity/Dependent Variables
 
@@ -185,7 +223,7 @@ and makes it difficult to see visually.
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 The boxplots again show that the outliers seem to be heavily influencing
-the distributions thus we will consider omitting them.
+the distributions thus I will consider omitting them.
 
 #### Omitting Outliers
 
@@ -198,7 +236,7 @@ of the analyses and models we plan to perform.
 
 #### Log-Transformation
 
-Now we will consider a log-transformation of the popularity variables:
+Now I will consider a log-transformation of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
@@ -210,8 +248,11 @@ Now we will consider a log-transformation of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-The distributions now look much more normal so we will consider using a
+The distributions now look much more normal so I will consider using a
 log-transformation within some of our analyses.
+
+Note: normality of predictors is not a requirement for MANOVA and
+regression.
 
 ### Independent Variables
 
@@ -362,8 +403,8 @@ We will conduct a bootstrap study with 10,000 samples to create a 95%
 confidence interval for the R-squared values.
 
     ##            [,1]      [,2]      [,3]       [,4]
-    ## 2.5%  0.1269311 0.1260480 0.1272366 0.05815921
-    ## 97.5% 0.1479422 0.1475906 0.1487865 0.07512960
+    ## 2.5%  0.1270048 0.1260597 0.1270257 0.05802515
+    ## 97.5% 0.1480497 0.1476788 0.1485755 0.07537718
 
 #### Bootstrap Plots
 
