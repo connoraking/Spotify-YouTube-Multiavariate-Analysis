@@ -91,6 +91,33 @@ Here are the plots of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
+## Multiple Multivariate Regression Analysis
+
+- I fit the model with theoretical formulas.
+- I perfomed diagnostic checks by using `ggplot2` for the residual plots.
+- I performed a log-transformation after determing a transformation necessary from the residual plots and then checked for normality using a Q-Q plot.
+- I performed a boostrap study to create 95% confidence intervals for the R-square value of our transformed model.
+- I conducted a likelihood ratio test for omitting variables from the model.
+
+### Residual Plots
+
+Here is the residual plot for the multiple multivariate model without any transformations
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+Here is the residual plot using a log-transformation
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+### Q-Q Plot
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+### Bootstrap Distributions
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+
 ## Results
 
 ### Multiple Multivariate Regression Analysis 
