@@ -68,23 +68,25 @@ I will utilize *one-way MANOVA*
 - I analyed the `NA` values and decided to remove them because they were a fraction of the data and were seemingly random. This allowed for easier analysis.
 - I plotted the distributions of the popularity/dependent variables and considered cleaning them via omitting outliers or a log-transformation.
 
+### Popularity Variable Distributions
+
 Here are the plots of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-Here are the plots when omitting outliers:
+**Omitting outliers**
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
-Here are the plots for a log-transformation:
+**Log-transformation**
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
-- I plotted the distributions of the independent variables 
+### Independent Variable Distributions
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-- And then I created a correlation plot to see the trends at a glance:
+### Correlation Plot
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
