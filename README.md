@@ -1,5 +1,7 @@
 # Spotify-YouTube-Multiavariate-Analysis
-Multivariate Analysis of Spotify Metrics
+In this project, I use various multivariate analysis techniques to assess the popularity of music tracks by analyzing several audio metrics derived from Spotfiy in combination with some popularity metrics from YouTube. The project was entirely coded in R and uses packages such as `tidyverse`, `corrplot`, and `ggpubr`. These packages were mainly used for data wrangling and visualization. Majority of the mulvariate analysis was coded from scratch using the theoretical formulas. 
+
+Please feel free to see 
 
 ## Table of Contents
 
@@ -7,7 +9,10 @@ Multivariate Analysis of Spotify Metrics
     - [Description](#description)
     - [Variables](#variables)
 2. [Project Goal](#project-goal)
-3. [Results](#results)
+3. [Exploratory Data Analysis](#Exploratory-Data-Analysis)
+4. [Multiple Multivariate Regression Analysis](#Multiple-Multivariate-Regression-Analysis)
+5. [MANOVA](#MANOVA)
+6. [Results](#results)
     - [Multiple Multivariate Regression](#Multiple-Multivariate-Regression-Analysis)
     - [MANOVA](#One-Way-MANOVA)
 
@@ -15,9 +20,9 @@ Multivariate Analysis of Spotify Metrics
 
 ### Description
 
-The dataset was retrieved from Kaggle [](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
+The dataset was retrieved from [Kaggle](https://www.kaggle.com/datasets/salvatorerastelli/spotify-and-youtube)
 
-The dataset is a combination of data from Spotify and Youtube and consists of several attributes. 
+The dataset is a combination of data from Spotify and Youtube and consists of several attributes. The data itself is from the top 10 songs of various popular artists and consists of over 20,000 observations amongst 28 variables.  
 
 The Spotify data includes various characteristics of songs, like `Danceability`, `Energy`, `Key`, `Loudness`, `Speechiness`,
 `Acousticness`, `Instrumentalness`, `Liveness`, `Valence`, `Tempo`, and `Duration_ms`. 
@@ -52,21 +57,90 @@ The dependent variable of `Stream` was from Spotify which represents the number 
 
 ## Project Goal
 
-In this project we will seek to answer various questions via multivariate analysis. We will attempt to answer:
+In this project I will seek to answer various questions via multivariate analysis. I will attempt to answer:
 
-1.  Can we predict the popularity of a song with the help of Spotify audio features?
+1.  Can I predict the popularity of a song with the help of Spotify audio features?
 
-We will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
+I will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
 
 2. Are there differences in the means of the popularity variables between Album_types? (album, compilation, single)
 
-We will utilize *one-way MANOVA* and code from scratch. 
+I will utilize *one-way MANOVA*
+
+## Exploratory Data Analysis
+    
+- I perfromed data wrangling and visualized the data with packages from `tidyverse` and `corrplot`. 
+- I analyed the `NA` values and decided to remove them because they were a fraction of each variable and were seemingly random. This allowed for easier analysis.
+- I plotted the distributions of the popularity/dependent variables and considered cleaning them via omitting outliers or a log-transformation.
+- I plotted the independent variables to assess their distributions and created a correlation plot for trends at a glance.
+
+### Popularity Variable Distributions
+
+Here are the plots of the popularity variables:
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+**Omitting outliers**
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
+**Log-transformation**
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+### Independent Variable Distributions
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+### Correlation Plot
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+## Multiple Multivariate Regression Analysis
+
+- I fit the model with theoretical formulas.
+- I perfomed diagnostic checks by using `ggplot2` for the residual plots.
+- I performed a log-transformation after determing a transformation necessary from the residual plots and then checked for normality using a Q-Q plot.
+- I performed a boostrap study to create 95% confidence intervals for the R-square value of our transformed model.
+- I conducted a likelihood ratio test for omitting variables from the model.
+
+### Residual Plots
+
+Here is the residual plot for the multiple multivariate model without any transformations
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+Here is the residual plot using a log-transformation
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+### Q-Q Plot
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+
+### Bootstrap Distributions
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+
+## MANOVA
+
+- I created grouped bar plots to compare the means of album types. I data wrangled using `group_by` and `summarise` to create an adequate dataframe to create scaled barplots for easier comparison.
+- I calculated the within-group sum of squares and cross product matrix `W`, between-group sum of squares and cross product matrix `B`, and Wilk's Lambda using theoretical formulas and distributions for 3 groups and multiple variables.
+- I checked equality of covariance matrices via the Box's M test.
+
+### Grouped Bar Plots
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+
+### Scaled Grouped Bar Plots
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ## Results
 
 ### Multiple Multivariate Regression Analysis 
 
-- **Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for the non-transformed model. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining unexplained variance.
+- **Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining variance and can decently predict a song's popularity.
 
 - **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
 
