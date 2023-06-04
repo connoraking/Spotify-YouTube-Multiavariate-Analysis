@@ -76,13 +76,21 @@ Here are the plots of the popularity variables:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
-Here are the plots for omitting outliers:
+Here are the plots when omitting outliers:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Here are the plots for a log-transformation:
+
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
+- I plotted the distributions of the independent variables 
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+- And then I created a correlation plot to see the trends at a glance:
+
+![](Multivar-Report_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ## Results
 
