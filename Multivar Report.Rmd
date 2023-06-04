@@ -1,0 +1,801 @@
+---
+title: "Multivariate Analysis Report"
+author: "Connor King"
+date: "2023-05-17"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Dataset
+
+**Description**
+
+The dataset is a combination of data from Spotify and Youtube and consists of several attributes. 
+
+The Spotify data includes various characteristics of songs, like `Danceability`, `Energy`, `Key`, `Loudness`, `Speechiness`,
+`Acousticness`, `Instrumentalness`, `Liveness`, `Valence`, `Tempo`, and `Duration_ms`. 
+
+The Youtube data, on the other hand, consists of dependent variables that measure the popularity of these songs on Youtube where the number of  `Views`, `Likes`, `Comments` are tracked for the corresponding music video. 
+
+The dependent variable of `Stream` was from Spotify which represents the number of times a particular song or track has been played or listened to on Spotify.
+
+
+```{r}
+library(tidyverse)
+
+df <- read_csv("Spotify_Youtube.csv")
+
+df <- as_tibble(df)
+
+dependent_columns <- c(6,8:18, 22:24, 28)
+
+df1 <- df[, dependent_columns]
+
+```
+
+## Project Goal
+
+In this project we will seek to answer various questions via multivariate analysis. We will attempt to answer:
+
+1.  Can we predict the popularity of a song with the help of Spotify audio features?
+
+We will achieve this via *multiple multivariate regression analysis* and include a *bootstrap study* to calculate confidence intervals for the R-squared values.
+
+2. Are there differences in the means of the popularity variables between Album_types? (album, compilation, single)
+
+We will utilize *one-way MANOVA*. 
+
+### Variable Descriptions
+
+**Independent Variables**
+
+- `Album_type`: the album in which the song is contained on Spotify. (album, single, compilation)
+- `Danceability`: describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. 
+- `Energy`: is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
+- `Key`: the key the track is in. Integers map to pitches using standard Pitch Class notation.
+- `Loudness`: the overall loudness of a track in decibels (dB). Loudness values are averaged across the entire track and are useful for comparing relative loudness of tracks. 
+- `Speechiness`: detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. 
+- `Acousticness`: a confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+- `Instrumentallness`: predicts whether a track contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.
+- `Liveness`: detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.
+- `Valence`: tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+- `Tempo`: the overall estimated tempo of a track in beats per minute (BPM).
+- `Duration_ms`: the duration of the track in milliseconds.
+
+**Popularity/Dependent Variables**
+
+- `Stream`: the number of streams of the song on Spotify.
+- `Likes`: the number of likes of the song's corresponding music video on YouTube
+- `Views`: the number of views of the YouTube video
+- `Comments`: the number of comments for the YouTube video
+
+
+## Exploratory Data Analysis
+
+```{r}
+summary(df1)
+```
+
+
+### `NA` values
+
+```{r}
+df1[!complete.cases(df1), ]
+```
+
+Here are the percent `NA`'s for every variable
+
+```{r}
+sapply(df1, function(x) mean(is.na(x)) * 100)
+```
+The `NA` values are predominantly found within the popularity variables. Since the percentages are small (all less than 3%) and are seemingly random we will remove them for easier analysis.
+
+```{r}
+df1 <- na.omit(df1)
+```
+
+
+### Popularity/Dependent Variables
+
+
+```{r}
+par(mfrow = c(2, 2))
+
+hist(df1$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+hist(df1$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+hist(df1$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+hist(df1$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+
+As shown, there seems to be large outliers that skew the distributions and makes it difficult to see visually.
+
+```{r}
+par(mfrow = c(2, 2))
+
+boxplot(df1$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+boxplot(df1$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+boxplot(df1$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+boxplot(df1$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+
+The boxplots again show that the outliers seem to be heavily influencing the distributions thus we will consider omitting them.
+
+#### Omitting Outliers
+
+```{r}
+
+df1_dep <- df1[, 13:16]
+
+df1_clean <- df1
+
+for (col in colnames(df1_dep)) {
+  Q1 <- quantile(df1_clean[[col]], 0.25, na.rm = TRUE)
+  Q3 <- quantile(df1_clean[[col]], 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+
+  outliers <- df1_clean[[col]] < (Q1 - 1.5 * IQR) | df1_clean[[col]] > (Q3 + 1.5 * IQR)
+
+  df1_clean <- df1_clean[!outliers, ]
+}
+
+
+par(mfrow = c(2, 2))
+
+hist(df1_clean$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+hist(df1_clean$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+hist(df1_clean$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+hist(df1_clean$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+```{r}
+par(mfrow = c(2, 2))
+
+boxplot(df1_clean$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+boxplot(df1_clean$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+boxplot(df1_clean$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+boxplot(df1_clean$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+
+The distributions are easier to visualize now; however, they are still all right skewed which will have some implications with the assumptions of the analyses and models we plan to perform. 
+
+#### Log-Transformation
+
+Now we will consider a log-transformation of the popularity variables:
+
+```{r}
+
+df1_dep <- df1[, 13:16]
+
+df1_log <- log(df1[, 13:16])
+
+par(mfrow = c(2, 2))
+
+hist(df1_log$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+hist(df1_log$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+hist(df1_log$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+hist(df1_log$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+
+```{r}
+par(mfrow = c(2, 2))
+
+boxplot(df1_log$Views, main = "Distribution of Views", xlab = "Number of Views", col = "skyblue")
+boxplot(df1_log$Comments, main = "Distribution of Comments", xlab = "Number of Comments",col = "skyblue")
+boxplot(df1_log$Likes, main = "Distribution of Likes", xlab = "Number of Likes",col = "skyblue")
+boxplot(df1_log$Stream, main = "Distribution of Streams", xlab = "Number of Streams",col = "skyblue")
+```
+
+The distributions now look much more normal so we will consider using a log-transformation within some of our analyses. 
+
+### Independent Variables
+
+```{r}
+df1 %>%
+  select(2:12) %>%
+  pivot_longer(everything()) %>%
+  ggplot(aes(x = value)) +
+  geom_histogram(bins = 30, color = "black", fill = "skyblue") +
+  facet_wrap(~name, scales = "free")
+  
+```
+
+From the histograms we see that ``Acousticeness`` is right skewed, ``Liveness`` is right skewed, ``Loudness`` is left skewed, ``Speechiness`` is right skewed, and ``Duration_ms`` and ``Instrumentalness`` seem to be heavily influenced by extreme outliers in regards to their skewness. 
+
+``Key`` is represeneted as a numerical variable within the dataset. It is a descrete numerical variable, but it is also a categorical variable. In music theory, the difference between the keys is not numerical but categorical thus it should be treated as a factor rather than a numeric variable within a regression model. 
+
+In regards to ``Duration_ms`` and ``Instrumentalness``, we will not remove these extreme outliers. For ``duration_ms``, it is plausible that there might be some very long songs. For ``Instrumentalness``, there are songs that are completely instrumental. These can be valuable in terms of understanding the relationships between variables. Since linear regression models can be highly sensitive to outliers, we will consider using a log-transformation to minimize the impact of these extreme values. 
+
+### Correlation Plot
+
+```{r}
+library(corrplot)
+corr_plot_data <- df1 %>% select(Danceability, Energy, Key, Loudness, Speechiness, Acousticness,
+                 Instrumentalness, Liveness, Valence, Tempo, Duration_ms)
+
+corr_matrix <- cor(corr_plot_data)
+
+corrplot(corr_matrix, 
+         method = "color",  
+         type = "upper", 
+         order = "hclust",
+         diag = TRUE,
+         addCoef.col = TRUE,
+         number.cex = 0.55,
+         tl.srt = 60)
+
+```
+
+From the correlation plot, we can see some trends at a glance.
+
+`Acousticness` seems to be negatively correlated with several variables, especially `Energy` and `Loudness`. 
+
+`Intrumentalness` also seems to be negatively correlation with several variables except `Acousticness`. 
+
+`Energy` seems to have a positive correlation between `Loudness`, and `Valence`. The relationship with `Loudness` is predictable, however it's interesting to see that a song with higher energy is correlated with higher positivity. 
+
+## Multiple Multivariate Regression
+
+Question: Can we predict the popularity of a song with the help of Spotify audio features? 
+
+- The popularity statistics (dependent variables) would be the **views**, **comments**, and **likes** from its corresponding YouTube music video and **streams** from spotify.
+
+
+```{r}
+n <- nrow(df1)
+
+Y <- as.matrix(df1 %>% select(Views, Likes, Comments, Stream))
+n <- nrow(Y)
+m <- ncol(Y)
+Z <- as.matrix(cbind(const = 1, df1 %>% select(2:12)))
+r <- ncol(Z) - 1
+
+b <- solve(t(Z) %*% Z) %*% t(Z) %*% Y   # OLS estimators
+
+b
+```
+
+Calculating R-sq:
+
+```{r}
+pred <- Z %*% b #matrix of predicted values
+resid <- Y - pred #matrix of residuals
+
+SSR <- diag(t(resid) %*% resid) # sum of squared residuals for each model
+SST <- apply(Y, 2, function(y) sum((y - mean(y))^2)) # total sum of squares for each model
+Rsq <- 1 - SSR / SST # R-squared for each model
+
+print(Rsq)
+```
+As shown, the R-squared values are very low.
+
+### Diagnostic Checks
+
+Since our multivariate multiple regression model has been fit to the data, we must perform diagnostic checks for the single-response model.
+
+We will examine the residual vectors $[\hat{\epsilon}_{j1}, \hat{\epsilon}_{j2}, \hat{\epsilon}_{j3}, \hat{\epsilon}_{j4}]$ for normality or outliers.
+
+```{r}
+#We need to reshape the data 
+
+pred <- Z %*% b #matrix of predicted values
+resid <- Y - pred #matrix of residuals
+
+df_resid <- as.data.frame(resid)
+df_pred <- as.data.frame(pred)
+
+#Adding an observation number for each frame
+df_resid$Obs <- 1:nrow(df_resid)
+df_pred$Obs <- 1:nrow(df_pred)
+
+#Reshaping from wide to long format
+df_resid_long <- df_resid %>% pivot_longer(-Obs, names_to = "Dependent", values_to = "Residual")
+df_pred_long <- df_pred %>% pivot_longer(-Obs, names_to = "Dependent", values_to = "Prediction")
+
+df_long <- inner_join(df_pred_long, df_resid_long, by = c("Obs", "Dependent"))
+
+head(df_long)
+
+```
+
+Since our data has now been reshaped, we can plot the residual plots for each popularity metric
+
+```{r}
+ggplot(df_long, aes(x = Prediction, y = Residual)) +
+  geom_point(alpha = 0.2, color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~Dependent, scales = "free")
+```
+
+There are several issues with these residual plots. They appear to be biased and heteroscedastic. The model also seems to underestimate as there appears to be far more positive residuals than negative.   
+
+### Log-transformation
+
+As we saw in our exploratory data analysis, it may be necessary to consider transformations. We will log-transform ``Duration_ms`` and ``Instrumentalness`` and then transform the popularity variables.
+
+```{r}
+df1_log <- df1
+
+#Adding constant to avoid taking log of 0
+df1_log$Duration_ms <- log(df1_log$Duration_ms + 1)
+df1_log$Instrumentalness <- log(df1_log$Instrumentalness + 1)
+Y_log <- log(Y+1)
+
+Z_log <- as.matrix(cbind(const = 1, df1_log %>% select(2:12)))
+
+
+
+b_log <- solve(t(Z_log) %*% Z_log) %*% t(Z_log) %*% Y_log
+pred_log <- Z_log %*% b_log
+resid_log <- Y_log - pred_log
+
+df_resid_log <- as.data.frame(resid_log)
+df_pred_log <- as.data.frame(pred_log)
+
+#Adding an observation number for each frame
+df_resid_log$Obs <- 1:nrow(df_resid_log)
+df_pred_log$Obs <- 1:nrow(df_pred_log)
+
+#Reshaping from wide to long format
+df_resid_long_log <- df_resid_log %>% pivot_longer(-Obs, names_to = "Dependent", values_to = "Residual")
+df_pred_long_log <- df_pred_log %>% pivot_longer(-Obs, names_to = "Dependent", values_to = "Prediction")
+
+df_long_log <- inner_join(df_pred_long_log, df_resid_long_log, by = c("Obs", "Dependent"))
+
+head(df_long_log)
+
+```
+
+```{r}
+ggplot(df_long_log, aes(x = Prediction, y = Residual)) +
+  geom_point(alpha = 0.2, color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  facet_wrap(~Dependent, scales = "free")
+```
+
+The ``Comments`` residual plot appears to show some bias with a linear trend near the bottom of the plot. However, despite the plots not being perfectly homoscedastic, these residuals plots are certainly an improvement and thus a log-transformation will continue to be used for analysis.
+
+#### Checking for normality
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+
+#We need to filter the dataframe for each dependent variables before creating the QQ plots
+
+# Create a single function for QQ plot
+qq_plot <- function(df, dep_var) {
+  df_filtered <- df[df$Dependent == dep_var,]
+  ggqqplot(df_filtered, "Residual") +
+    labs(title = dep_var, y = "Theoretical Quantiles")
+}
+
+# Apply the function to each dependent variable and store the results in a list
+qq_plots <- lapply(unique(df_long_log$Dependent), qq_plot, df = df_long_log)
+
+# Arrange the plots in a grid
+qq_plots_grid <- ggarrange(plotlist = qq_plots)
+
+# Print the grid of QQ plots
+print(qq_plots_grid)
+```
+
+The Q-Q plots appear to show approximate normality.
+
+### R-sq and Bootstrap Study
+
+```{r}
+SSR <- diag(t(resid_log) %*% resid_log) # sum of squared residuals for each model
+SST <- apply(Y_log, 2, function(y) sum((y - mean(y))^2)) # total sum of squares for each model
+Rsq <- 1 - SSR / SST # R-squared for each model
+
+print(Rsq)
+```
+
+The R-squared values are still low; however, they are greater than the R-squared values of the non-transformed model. The low values suggest that the model is not very good at making accurate predictions because there is a large amount of unexplained variance. 
+
+### Bootstrap
+
+We will conduct a bootstrap study with 10,000 samples to create a 95% confidence interval for the R-squared values.
+
+```{r}
+S <- 10000 #num samples
+
+bootstrap_Rsq <- matrix(nrow = S, ncol = ncol(Y_log))
+
+for (s in 1:S){
+  bootstrap_sample_idx <- sample(nrow(df1_log), replace = TRUE)
+  
+  bstp_df <- df1_log[bootstrap_sample_idx, ]
+  Y_bstp <- Y_log[bootstrap_sample_idx, , drop = FALSE]
+  
+  #fitting model on the bootstrap samples
+  Z_bstp <- as.matrix(cbind(const = 1, bstp_df %>% select(2:12)))
+  b_bstp <- solve(t(Z_bstp) %*% Z_bstp) %*% t(Z_bstp) %*% Y_bstp
+  pred_bstp <- Z_bstp %*% b_bstp
+  resid_bstp <- Y_bstp - pred_bstp
+  
+  #bootstrap Rsq
+  SSR_bstp <- diag(t(resid_bstp) %*% resid_bstp)
+  SST_bstp <- apply(Y_bstp, 2, function(y) sum((y-mean(y))^2))
+  Rsq_bstp <- 1 - SSR_bstp / SST_bstp
+  
+  #storing bootstrap Rsq values
+  bootstrap_Rsq[s, ] <- Rsq_bstp
+
+}
+
+CI_Rsq_bstp <- apply(bootstrap_Rsq, 2, function(rsq) quantile(rsq, probs = c(0.025, 0.975)))
+
+print(CI_Rsq_bstp)
+
+```
+
+#### Bootstrap Plots
+
+```{r}
+cols <- colnames(Y_log)
+
+par(mfrow= c(2,2))
+
+for (i in seq_along(cols)){
+  hist(bootstrap_Rsq[, i],
+    main = paste("Bootstrap R-square for", cols[i]),
+    xlab = "R-squared",
+    col = "skyblue")
+  
+  abline(v = Rsq[i], col = "red", lwd = 2, lty = 2)
+               
+}
+```
+
+Here are the plots of the Boostrapped distributions for the R-square values. The red line indicates the actual R-square value we calculated.
+
+**Interpretation**
+
+We are 95% confident that the lower endpoint and the higher endpoint for the intervals represents the percentage of variance (when multiplied by 100) of `Views`, `Likes`, `Comments`, and `Stream` that can be explained by our model.
+
+All of our R-sq values from the regression earlier were contained in their respective confidence intervals.
+
+
+### Regression Analysis
+
+```{r}
+b_log
+```
+
+- `Danceability` seems to be positively associated with all four popularity variables (Views, Likes, Comments, Stream). It shows the largest effect on Likes.
+
+- `Energy` has a negative effect on all four popularity variables. It seems to have the largest negative effect on Comments.
+
+- `Key` shows a small positive effect on Views, Likes, and Comments, but a tiny negative effect on Stream.
+
+- `Loudness` is positively associated with all popularity variables, with its effect being smallest on Stream.
+
+- `Speechiness` negatively affects all popularity variables. It shows the largest negative effect on Stream.
+
+- `Acousticness` is negatively associated with all popularity variables, with its largest negative effect on Comments.
+
+- `Instrumentalness` has a negative effect on all popularity variables, with its largest negative effect on Comments.
+
+- `Liveness` has a negative effect on all popularity variables, with its largest negative effect on Comments.
+
+- `Valence` is negatively associated with all popularity variables, with its largest negative effect on Comments.
+
+- `Tempo` has a tiny positive effect on all popularity variables, with its largest positive effect on Likes.
+
+- `Duration_ms` shows a positive effect on Views, Likes, and Comments, but a smaller effect on Stream.
+
+These are broad interpretations of each variable's effect estimated effect when all other variables are held constant. The actual relationships may be more complex, especially since interactions between variables may be present. 
+
+### Variable Omission
+
+From the analysis above, we will conduct a likelihood ratio test for regression parameters to see if a subset of the predictors has a statistically significant linear relationship to the outcome.
+
+The variables `Key` and `Tempo` have very small coefficients for all popularity variables suggesting that their contributions may be negligible. 
+
+$H_0: \beta_{Key} = \beta_{Tempo} = 0$
+
+```{r}
+#testing whether or not the coefficients are all zero
+variables_to_test <- c("Key", "Tempo")
+variables_to_keep <- setdiff(colnames(Z_log), variables_to_test)
+
+q <- length(variables_to_keep) - 1 
+grp1 <- rownames(b_log) %in% variables_to_keep
+grp2 <- rownames(b_log) %in% variables_to_test
+
+estSigma <- t(resid_log) %*% resid_log / n
+
+b_grp1 <- solve(t(Z_log[ , grp1]) %*% Z[ , grp1]) %*% t(Z_log[ , grp1]) %*% Y_log
+pred_grp1 <- Z_log[ , grp1] %*% b_grp1
+resid_grp1 <- Y_log - pred_grp1
+
+estSigma1 <- t(resid_grp1) %*% resid_grp1/n
+
+#Likelihood ratio test statistic and it's approx
+LR_test_statistic <- -n * (log(det(estSigma)) - log(det(estSigma1)))
+
+approx_LR_test_statistic <- -(n - r - 1 - 0.5 * (m - r + q + 1)) * (log(det(estSigma)) - log(det(estSigma1)))
+
+ifelse(approx_LR_test_statistic > qchisq(0.95, m *(r-q)), "Reject H0", "Don't reject H0")
+```
+```{r}
+# The corresponding p-value is:
+pchisq(approx_LR_test_statistic, df = m * (r - q), lower.tail = FALSE)
+```
+
+We rejected $H_0$ which means that we cannot drop all of `Key` and `Tempo`. The result indicates that at least one of the coefficients for these variables is significantly different from zero. 
+
+We will now instead conduct the likelihood ratio test both `Key` and `Tempo` separately. 
+
+- Testing $H_0: \beta_{Key} = 0$
+
+```{r}
+#testing whether or not the coefficients are all zero
+variables_to_test <- c("Key")
+variables_to_keep <- setdiff(colnames(Z_log), variables_to_test)
+
+q <- length(variables_to_keep) - 1 
+grp1 <- rownames(b_log) %in% variables_to_keep
+grp2 <- rownames(b_log) %in% variables_to_test
+
+estSigma <- t(resid_log) %*% resid_log / n
+
+b_grp1 <- solve(t(Z_log[ , grp1]) %*% Z_log[ , grp1]) %*% t(Z_log[ , grp1]) %*% Y_log
+pred_grp1 <- Z_log[ , grp1] %*% b_grp1
+resid_grp1 <- Y_log - pred_grp1
+
+estSigma1 <- t(resid_grp1) %*% resid_grp1/n
+
+#Likelihood ratio test statistic and it's approx
+LR_test_statistic <- -n * (log(det(estSigma)) - log(det(estSigma1)))
+
+approx_LR_test_statistic <- -(n - r - 1 - 0.5 * (m - r + q + 1)) * (log(det(estSigma)) - log(det(estSigma1)))
+
+ifelse(approx_LR_test_statistic > qchisq(0.95, m *(r-q)), "Reject H0", "Don't reject H0")
+```
+```{r}
+# The corresponding p-value is:
+pchisq(approx_LR_test_statistic, df = m * (r - q), lower.tail = FALSE)
+```
+
+Since we rejected $H_0$ at the $\alpha = 0.05$ level, we cannot drop `Key`.
+
+- Now testing $H_0: \beta_{Tempo} = 0$
+
+```{r}
+#testing whether or not the coefficients are all zero
+variables_to_test <- c("Tempo")
+variables_to_keep <- setdiff(colnames(Z_log), variables_to_test)
+
+q <- length(variables_to_keep) - 1 
+grp1 <- rownames(b_log) %in% variables_to_keep
+grp2 <- rownames(b_log) %in% variables_to_test
+
+estSigma <- t(resid_log) %*% resid_log / n
+
+b_grp1 <- solve(t(Z_log[ , grp1]) %*% Z_log[ , grp1]) %*% t(Z_log[ , grp1]) %*% Y_log
+pred_grp1 <- Z_log[ , grp1] %*% b_grp1
+resid_grp1 <- Y_log - pred_grp1
+
+estSigma1 <- t(resid_grp1) %*% resid_grp1/n
+
+#Likelihood ratio test statistic and it's approx
+LR_test_statistic <- -n * (log(det(estSigma)) - log(det(estSigma1)))
+
+approx_LR_test_statistic <- -(n - r - 1 - 0.5 * (m - r + q + 1)) * (log(det(estSigma)) - log(det(estSigma1)))
+
+ifelse(approx_LR_test_statistic > qchisq(0.95, m *(r-q)), "Reject H0", "Don't reject H0")
+```
+```{r}
+# The corresponding p-value is:
+pchisq(approx_LR_test_statistic, df = m * (r - q), lower.tail = FALSE)
+```
+
+The test results indicated that `Key` and `Tempo`do have a significant linear relationship with the outcomes. 
+
+Since we are using the log-transformed model, the magnitude of a coefficient doesn't directly correspond to the magnitude of its effect on the outcome. Instead, each coefficient represents the average percentage change in the outcome for each one-unit increase in the corresponding predictor, all else being equal.
+
+### Regression Conclusion
+
+**Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for both non-transformed and log-transformed models, suggesting our model does not explain a high amount of variance in the data. There is a large amount of unexplained variance, suggesting further improvements or additions are needed in our model.
+
+**Feature Importance**: *Danceability*, *Loudness*, and *Duration_ms* seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). *Energy*, *Speechiness*, *Acousticness*, *Instrumentalness*, *Liveness*, and *Valence* were negatively associated with song popularity across all metrics.
+
+**Omission**: *Key* and *Tempo*, despite having smaller coefficients, could not be omitted from the model as they showed a statistically significant linear relationship with the outcome variables.
+
+**Improvements**: Given the model performance, future research could look into the interaction effects between variables or other non-linear relationships. Additional variables not considered in this study may also contribute to song popularity.
+
+## One-Way MANOVA
+
+Question: Are there differences in the means of the popularity variables between Album_types? (album, compilation, single)
+
+We will compare group means with `Album_type` as factors.
+
+### Visualizations
+
+```{r}
+df1_means <- df1 %>%
+  group_by(Album_type) %>%
+  summarise(across(c("Stream", "Views", "Likes", "Comments"), mean))
+```
+
+
+```{r}
+agg_formula <- as.formula(paste("cbind(Likes, Views, Comments, Stream) ~ Album_type"))
+
+# Calculate the means for each level of the factor
+df1_group_means <- df1 %>%
+  group_by(Album_type) %>%
+  summarise(across(c("Stream", "Views", "Likes", "Comments"), mean))
+
+df1_group_std <- df1 %>%
+  group_by(Album_type) %>%
+  summarise(across(c("Stream", "Views", "Likes", "Comments"), sd))
+
+
+
+long_means <- df1_group_means %>%
+  pivot_longer(cols = c("Likes", "Views", "Comments", "Stream"),
+               names_to = "Variable",
+               values_to = "Mean")
+
+long_means <- long_means %>%
+  group_by(Variable) %>%
+  mutate(ScaledMean = scale(Mean))
+```
+
+```{r}
+ggplot(long_means, aes(x = Album_type, y = Mean, fill = Album_type)) +
+  geom_bar(stat = "Identity") +
+  facet_wrap(~Variable, scales = "free") +
+  labs(x = "Album Type", y = "Mean Value") 
+```
+
+
+```{r}
+ggplot(long_means, aes(x = Variable, y = ScaledMean, fill = Album_type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Scaled Mean Values by Album Type",
+       x = "Dependent Variables",
+       y = "Scaled Mean",
+       fill = "Album Type")
+```
+
+
+### Testing
+
+$H_0: \boldsymbol{\tau}_{album} + \boldsymbol{\tau}_{compilation} + \boldsymbol{\tau}_{single} = 0$
+
+```{r}
+rm(list = ls())
+set.seed(697)
+
+df <- read_csv("Spotify_Youtube.csv")
+df <- as_tibble(df)
+dependent_columns <- c(6,8:18, 22:24, 28)
+df1 <- df[, dependent_columns]
+df1 <- na.omit(df1)
+df1 <- as_tibble(df1)
+
+#Comparing group means with Album_type as factors
+groups <- unique(df1$Album_type)
+```
+
+From the `jmv` package, we tried to utilize `mancova`, however the sample size was too large:
+
+```{r, echo = TRUE, error = TRUE}
+library(jmv)
+
+(package <- mancova(data = df,
+                    deps = vars(Views, Likes, Comments, Stream),
+                    factors = Album_type))
+```
+
+Thus we will compute MANOVA manually:
+
+```{r, echo = TRUE}
+n <- nrow(df1)
+g <- length(levels(as.factor(df1$Album_type)))
+p <- ncol(df1[, c(13:16)])
+
+nms <- function(data) {
+  list(
+    n = nrow(data),
+    m = matrix(colMeans(data), ncol = 1),
+    S = cov(data)
+  )
+}
+
+sum_by_type <- 
+  df1[, 13:16] %>%
+  split(as.factor(df1$Album_type)) %>%
+  map(nms)
+
+W <- #within-group sum of squares and cross product-matrix
+  sum_by_type %>%
+  map(~ (.x$n - 1) * .x$S) %>%
+  reduce(`+`)
+
+xbar <- 
+  sum_by_type %>%
+  map(~ .x$n * .x$m) %>%
+  reduce(`+`) / n
+
+B <- #between-group sum of squares and cross-product matrix
+  sum_by_type %>%
+  map(~ .x$n * (.x$m - xbar) %*% t(.x$m - xbar)) %>%
+  reduce(`+`)
+
+Wilks_Lambda <- det(W) / det(W + B)
+
+test_statistic <- ((n - p - 2) / p) * ((1 - sqrt(Wilks_Lambda)) / sqrt(Wilks_Lambda))
+critical_value <- qf(0.05, 2 * p, 2 * (n - p - 2), lower.tail = FALSE)
+
+ifelse(test_statistic > critical_value,
+       "Reject H0",
+       "Do not reject H0")
+```
+
+```{r, echo = TRUE}
+Wilks_Lambda
+```
+
+We reject $H_0$ suggesting that the means between the groups of `Album_type` are different. Despite Wilk's Lambda being a large value, we still rejected. This can be explained by the large sample size. 
+
+
+### Assumptions Check
+
+- The dataset is assumed to be a random sample from from different populations that are independent. 
+
+- Since our sample size for each group is large, the assumption of each population being multivariate normal can be relaxed by appealing to the central limit theorem. 
+
+#### Testing for equality of Covariance Matrices via the **Box's M-test**:
+
+An important assumption of MANOVA is the equality of covariance matrices across our groups. Essentially, this means we assume the variability within our groups and the relationships among our dependent variables are the same for all `Album_types`. We used Box's M test to check this assumption.
+
+$H_0: \boldsymbol{\Sigma}_{album} + \boldsymbol{\Sigma}_{compilation} + \boldsymbol{\Sigma}_{single} = \boldsymbol{\Sigma}$
+
+```{r}
+S_pooled <- W / (n - g)
+det_S_pooled <- det(S_pooled)
+
+m2 <- 
+  sum_by_type %>%
+  map(~ (.x$n - 1) * log(det(.x$S))) %>%
+  reduce(`+`)
+
+M <- (n - g) * log(det_S_pooled) - m2
+
+d1 <- 
+  sum_by_type %>%
+  map(~ 1 / (.x$n - 1)) %>%
+  reduce(`+`)
+
+u <- (d1 - 1 / (n - g)) * ( ( 2 * p^2 + 3 * p -1 ) / ( 6 * (p + 1) * (g - 1) ) )
+
+(C <- ( 1 - u ) * M)
+
+(nu <- p * (p + 1) * (g - 1) / 2)
+
+critical_value_Box <- qchisq(0.05, nu, lower.tail = FALSE)
+
+C > critical_value_Box
+(p_val_Box <- pchisq(C, nu, lower.tail = FALSE))
+```
+
+Unfortunately, we found that the assumption of equal covariance matrices was violated. This suggests that the relationships among our popularity variables may not be the same across different Album_types, which is a concern for the interpretation of our MANOVA results. Despite finding significant results in our initial MANOVA, the violation of the equal covariance matrices assumption suggests we should interpret these results with caution. 
+
+### MANOVA Conclusion
+
+- Significant differences found in the popularity means across different `Album_types`.
+
+- Rejection of the null hypothesis according to the Wilk's Lambda test.
+
+- Violation of equal covariance matrices assumption detected by the Box's M-test.
+
+- Results should be interpreted with caution due to the violation of the assumption.
+
+- Additional studies are required to explore and correct for the unequal covariance matrices, possibly considering interactions, different statistical methods or data transformations.
