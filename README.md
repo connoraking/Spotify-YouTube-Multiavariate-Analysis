@@ -1,6 +1,11 @@
 # Spotify-YouTube-Multiavariate-Analysis
 Multivariate Analysis of Spotify Metrics
 
+## Table of Contents
+1. [Dataset](#Dataset)
+   -[Description](#Description)
+
+
 ## Dataset
 
 ### Description
@@ -15,6 +20,30 @@ The Spotify data includes various characteristics of songs, like `Danceability`,
 The Youtube data, on the other hand, consists of dependent variables that measure the popularity of these songs on Youtube where the number of  `Views`, `Likes`, `Comments` are tracked for the corresponding music video. 
 
 The dependent variable of `Stream` was from Spotify which represents the number of times a particular song or track has been played or listened to on Spotify.
+
+### Variables
+
+#### Independent Variables
+
+- `Album_type`: the album in which the song is contained on Spotify. (album, single, compilation)
+- `Danceability`: describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity. 
+- `Energy`: is a measure from 0.0 to 1.0 and represents a perceptual measure of intensity and activity.
+- `Key`: the key the track is in. Integers map to pitches using standard Pitch Class notation.
+- `Loudness`: the overall loudness of a track in decibels (dB). Loudness values are averaged across the entire track and are useful for comparing relative loudness of tracks. 
+- `Speechiness`: detects the presence of spoken words in a track. The more exclusively speech-like the recording (e.g. talk show, audio book, poetry), the closer to 1.0 the attribute value. 
+- `Acousticness`: a confidence measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
+- `Instrumentallness`: predicts whether a track contains no vocals. The closer the instrumentalness value is to 1.0, the greater likelihood the track contains no vocal content.
+- `Liveness`: detects the presence of an audience in the recording. Higher liveness values represent an increased probability that the track was performed live.
+- `Valence`: tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+- `Tempo`: the overall estimated tempo of a track in beats per minute (BPM).
+- `Duration_ms`: the duration of the track in milliseconds.
+
+#### Popularity/Dependent Variables
+
+- `Stream`: the number of streams of the song on Spotify.
+- `Likes`: the number of likes of the song's corresponding music video on YouTube
+- `Views`: the number of views of the YouTube video
+- `Comments`: the number of comments for the YouTube video
 
 ## Project Goal
 
