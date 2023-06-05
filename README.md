@@ -1,7 +1,7 @@
 # Spotify-YouTube-Multiavariate-Analysis
 In this project, I use various multivariate analysis techniques to assess the popularity of music tracks by analyzing several audio metrics derived from Spotfiy in combination with some popularity metrics from YouTube. The project was entirely coded in R and uses packages such as `tidyverse`, `corrplot`, and `ggpubr`. These packages were mainly used for data wrangling and visualization. Majority of the mulvariate analysis was coded from scratch using the theoretical formulas. 
 
-Please feel free to see 
+- **Report**: A detailed report of the project can be found here: [Report](./Multivar-Report.md)
 
 ## Table of Contents
 
