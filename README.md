@@ -141,6 +141,12 @@ Here is the residual plot using a log-transformation
 
 ### Multiple Multivariate Regression Analysis 
 
+- The R-squared values were:   
+    - Views: $R^{2} = 0.1369$      
+    - Likes: $R^{2} = 0.1362$    
+    - Comments: $R^{2} = 0.1373$     
+    - Stream: $R^{2} = 0.0658$  
+
 - **Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining variance and can decently predict a song's popularity.
 
 - **Feature Importance**: `Danceability`, `Loudness`, and `Duration_ms` seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity across all metrics.
