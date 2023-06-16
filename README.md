@@ -130,6 +130,17 @@ Using the log-transformed model, the $R^{2}$ values were:
 
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
+### Bootstrap Confidence Intervals
+
+The bootstrap study with 10,000 samples produced the following 95% confidence intervals for the $R^{2}$ values:
+
+- Views: $R^{2}: (0.1270, 0.1480$      
+- Likes: $R^{2}: (0.1261, 0.1477)$    
+- Comments: $R^{2}: (0.1270, 0.1486)$     
+- Stream: $R^{2}: (0.0580, 0.0754)$ 
+
+Our actual $R^{2}$ values were all contained within their corresponding bootstrap intervals.
+
 ## MANOVA
 
 - I created grouped bar plots to compare the means of album types. I data wrangled using `group_by` and `summarise` to create an adequate dataframe to create scaled barplots for easier comparison.
