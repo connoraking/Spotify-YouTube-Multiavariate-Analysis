@@ -121,6 +121,13 @@ Here is the residual plot using a log-transformation
 
 ### Bootstrap Distributions
 
+Using the log-transformed model, the $R^{2}$ values were:
+
+- Views: $R^{2} = 0.1369$      
+- Likes: $R^{2} = 0.1362$    
+- Comments: $R^{2} = 0.1373$     
+- Stream: $R^{2} = 0.0658$   
+
 ![](Multivar-Report_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ## MANOVA
