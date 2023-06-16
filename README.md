@@ -16,7 +16,7 @@ In this project, I use various multivariate analysis techniques to assess the po
     - [Correlation Plot](#correlation-plot)
 5. [Multiple Multivariate Regression Analysis](#Multiple-Multivariate-Regression-Analysis)
     - [Residual Plots](#residual-plots)
-    - [Q-Q Plot](#Q-Q-plot]
+    - [Q-Q Plot](#Q-Q-plot)
     - [Bootstrap Distributions](#bootstrap-distributions)
     - [Bootstrap Confidence Intervals](#bootstrap-confidence-intervals)
 7. [MANOVA](#MANOVA)
