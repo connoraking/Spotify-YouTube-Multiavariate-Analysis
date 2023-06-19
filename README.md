@@ -197,7 +197,7 @@ Our actual $R^{2}$ values were all contained within their corresponding bootstra
 
 ### Insights into Song Characteristics
 
-- The analysis showed that certain song characteristics like `Danceability`, `Loudness`, and `uration_ms` are positively associated with song popularity across all metrics (Views, Likes, Comments, Stream). 
+- The analysis showed that certain song characteristics like `Danceability`, `Loudness`, and `Duration_ms` are positively associated with song popularity across all metrics (Views, Likes, Comments, Stream). 
 - Conversely, other attributes like `Energy`, `Speechiness`, `Acousticness`, `Instrumentalness`, `Liveness`, and `Valence` were negatively associated with song popularity. 
 - These insights can inform music producers about the types of characteristics that are currently popular and could be emphasized in new music production.
 
