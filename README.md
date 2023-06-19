@@ -23,6 +23,7 @@ In this project, I use various multivariate analysis techniques to assess the po
 8. [Results](#results)
     - [Multiple Multivariate Regression](#Multiple-Multivariate-Regression-Analysis)
     - [MANOVA](#One-Way-MANOVA)
+9. [Conclusions](#conclusions)
 
 ## Dataset
 
@@ -191,3 +192,26 @@ Our actual $R^{2}$ values were all contained within their corresponding bootstra
 - Results should be interpreted with caution due to the violation of the assumption.
 
 - Additional studies are required to explore and correct for the unequal covariance matrices, possibly considering interactions, different statistical methods or data transformations.
+
+## Conclusions
+
+### Insights into Song Characteristics
+
+- The analysis showed that certain song characteristics like Danceability, Loudness, and Duration_ms are positively associated with song popularity across all metrics (Views, Likes, Comments, Stream). 
+- Conversely, other attributes like Energy, Speechiness, Acousticness, Instrumentalness, Liveness, and Valence were negatively associated with song popularity. 
+- These insights can inform music producers about the types of characteristics that are currently popular and could be emphasized in new music production.
+
+### Understanding Audience Preferences
+
+- The differences in popularity means across different Album types (album, compilation, single) indicates that audiences might have specific preferences when it comes to how they consume music. 
+- Music producers and distributors can leverage this information to align their strategies with consumer preferences and maximize audience engagement.
+
+### Guidance for Music Promotion
+
+- With the ability to predict a song's popularity based on its features, music companies can better strategize their promotional efforts. 
+- Resources can be allocated more efficiently by focusing on songs with characteristics that have been shown to attract more streams, views, likes, and comments.
+
+## Further Research
+
+-  The findings also open new avenues for future research. For example, exploring interaction effects between variables or other non-linear relationships, as well as incorporating additional variables not considered in this study, could yield even more nuanced insights into what drives song popularity.
+
