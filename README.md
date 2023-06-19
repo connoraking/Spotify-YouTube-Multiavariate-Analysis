@@ -211,7 +211,7 @@ Our actual $R^{2}$ values were all contained within their corresponding bootstra
 - With the ability to predict a song's popularity based on its features, music companies can better strategize their promotional efforts. 
 - Resources can be allocated more efficiently by focusing on songs with characteristics that have been shown to attract more streams, views, likes, and comments.
 
-## Further Research
+### Further Research
 
 -  The findings also open new avenues for future research. For example, exploring interaction effects between variables or other non-linear relationships, as well as incorporating additional variables not considered in this study, could yield even more nuanced insights into what drives song popularity.
 
