@@ -359,7 +359,7 @@ ggplot(df_long_log, aes(x = Prediction, y = Residual)) +
   facet_wrap(~Dependent, scales = "free")
 ```
 
-The ``Comments`` residual plot appears to show some bias with a linear trend near the bottom of the plot. However, despite the plots not being perfectly homoscedastic, these residuals plots are certainly an improvement and thus a log-transformation will continue to be used for analysis.
+The ``Comments`` residual plot appears to show some bias with a linear trend near the bottom of the plot. The line could be the result of horizontal values for one of the variables (further analysis would be needed). However, despite the plots not being perfectly homoscedastic, these residuals plots are certainly an improvement and thus a log-transformation will continue to be used for analysis.
 
 #### Checking for normality
 
@@ -398,7 +398,7 @@ Rsq <- 1 - SSR / SST # R-squared for each model
 print(Rsq)
 ```
 
-The R-squared values are still low; however, they are greater than the R-squared values of the non-transformed model. The low values suggest that the model is not very good at making accurate predictions because there is a large amount of unexplained variance. 
+The R-squared values are still low; however, they are greater than the R-squared values of the non-transformed model. These values are rather impressive given the complexity behind predicting performance of a song. 
 
 ### Bootstrap
 
@@ -605,7 +605,7 @@ Since we are using the log-transformed model, the magnitude of a coefficient doe
 
 ### Regression Conclusion
 
-**Model Performace**:  Despite performing transformations to improve the fit of our models, the R-squared values were low for both non-transformed and log-transformed models, suggesting our model does not explain a high amount of variance in the data. There is a large amount of unexplained variance, suggesting further improvements or additions are needed in our model.
+**Model Performace**:  The R-squared values for the non-transformed model are very low. However, the R-squared values for our log-transformed model were very reasonable given the difficulty of the research question at hand. This result suggests our model does a reasonable job at explaining variance and can decently predict a song's popularity.
 
 **Feature Importance**: *Danceability*, *Loudness*, and *Duration_ms* seemed to have a positive association with song popularity across all metrics (Views, Likes, Comments, Stream). *Energy*, *Speechiness*, *Acousticness*, *Instrumentalness*, *Liveness*, and *Valence* were negatively associated with song popularity across all metrics.
 
